@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+	>
+
+   	<View
+   	    android:id="@+id/top_line"
+   	    android:layout_width="match_parent"
+   	    android:layout_height="1dp"
+   	    android:layout_below="@+id/title"
+   	    android:layout_centerHorizontal="true"
+   	    android:background="@android:color/black" />
+
+   	<TextView
+   	    android:id="@+id/title"
+   	    android:layout_width="fill_parent"
+   	    android:layout_height="wrap_content"
+   	    android:layout_toRightOf="@+id/thumbnail"
+   	    android:padding="10dp"
+   	    android:text="Titulo"
+   	    android:textSize="20sp"
+   	    android:color="#f3f3f3" />
+
+   	<com.android.volley.toolbox.NetworkImageView
+   	    android:id="@+id/thumbnail"
+   	    android:layout_width="100dp"
+   	    android:layout_height="100dp"
+   	    android:layout_alignBottom="@+id/title"
+   	    android:layout_alignParentLeft="true"
+   	    android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
+
+</RelativeLayout>

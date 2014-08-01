@@ -1,0 +1,125 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.musictest.MainActivity" >
+
+    
+    <ImageView
+        android:id="@+id/closePlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_action_cancel"
+        android:visibility="gone" />
+    
+    <com.example.slidingpanel.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        sothree:panelHeight="68dp"
+        sothree:shadowHeight="4dp"
+        sothree:paralaxOffset="100dp"
+        sothree:dragView="@+id/dragView"
+        >
+
+        <FrameLayout
+        	android:id="@+id/frame_container"
+        	android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+        	android:layout_above="@+id/player" >
+
+    	</FrameLayout>
+    	
+        
+
+        <!-- SLIDING LAYOUT -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#eeeeee"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="false"
+            android:id="@+id/dragView">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:clickable="false">
+
+                <com.example.musictest.VideoView 
+		        	android:id="@+id/videoView2"
+		         	android:layout_width="120dp"
+		    		android:layout_height="68dp"
+		    		android:clickable="false"
+		    		>
+		    	</com.example.musictest.VideoView>
+		    	
+                <com.example.musictest.CustomImageView
+		        	android:id="@+id/imageView2"
+		         	android:layout_width="68dp"
+		    		android:layout_height="68dp"
+		    		android:clickable="false"
+		    		android:src="@drawable/alessoninromantics"
+		    		>
+		    	</com.example.musictest.CustomImageView>
+		    	
+                 <TextView
+		        	android:id="@+id/textView2"
+		         	android:layout_width="wrap_content"
+		    		android:layout_height="68dp"
+		    		android:clickable="false"
+		    		android:text="Song - Artist"
+		    		android:textSize="24dp"
+		    		android:gravity="center"
+		    		>
+		    	</TextView>
+		    	
+                <ImageView
+			        android:id="@+id/barPlayButton"
+			        android:layout_width="68dp"
+			        android:layout_height="68dp"
+			        android:src="@drawable/ic_action_play"
+			        android:gravity="right"
+			        />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/mediaController"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+            	<ImageView
+			        android:id="@+id/playerPlayButton"
+			        android:layout_width="60dp"
+			        android:layout_height="60dp"
+			        android:layout_centerHorizontal="true"
+			        android:layout_alignParentBottom="true"
+			        android:src="@drawable/ic_action_play"
+			        />
+	            
+            </RelativeLayout>
+        </LinearLayout>
+    </com.example.slidingpanel.SlidingUpPanelLayout>
+
+
+    <ImageView
+        android:id="@+id/videoPlayButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:src="@drawable/ic_action_play_over_video"
+        android:visibility="gone"  />
+
+    
+
+</RelativeLayout>

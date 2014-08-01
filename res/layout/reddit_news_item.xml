@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="5dp">
+
+   	<View
+   	    android:id="@+id/top_line"
+   	    android:layout_width="match_parent"
+   	    android:layout_height="1dp"
+   	    android:layout_below="@+id/news_title"
+   	    android:layout_centerHorizontal="true"
+   	    android:layout_margin="20dp"
+   	    android:background="@android:color/black" />
+
+   	<TextView
+   	    android:id="@+id/news_title"
+   	    android:layout_width="fill_parent"
+   	    android:layout_height="wrap_content"
+   	    android:layout_alignLeft="@+id/top_line"
+   	    android:layout_centerVertical="true"
+   	    android:padding="10dp"
+   	    android:text="Titulo"
+   	    android:textSize="16dp"
+   	    android:color="#f3f3f3" />
+
+   	<TextView
+   	    android:id="@+id/reddit"
+   	    android:layout_width="wrap_content"
+   	    android:layout_height="wrap_content"
+   	    android:layout_above="@+id/news_title"
+   	    android:layout_alignParentLeft="true"
+   	    android:padding="10dp"
+   	    android:text="Reddit"
+   	    android:textSize="12dp"
+   	    android:color="#f3f3f3" />
+
+</RelativeLayout>
