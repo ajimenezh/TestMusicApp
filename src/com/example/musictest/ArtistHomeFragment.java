@@ -67,7 +67,7 @@ public class ArtistHomeFragment extends Fragment implements ActionBar.TabListene
 	private Context mContext;
 	private String artistQuery;
 	private Artist artist = new Artist();
-	private HashMap<String, ArrayList<String>> albums = new HashMap<String, ArrayList<String>>();
+	private HashMap<String, ArrayList<Integer>> albums = new HashMap<String, ArrayList<Integer>>();
 	
     private int infoLoaded = 0;
     
@@ -492,10 +492,10 @@ public class ArtistHomeFragment extends Fragment implements ActionBar.TabListene
 			if (MainActivity.Next.get(ArtistHash) != null) {
 				for(Integer Album: MainActivity.Next.get(ArtistHash)) {
 					String album = MainActivity.Name.get(Album);
-					albums.put(album, new ArrayList<String>());
+					albums.put(album, new ArrayList<Integer>());
 					if (MainActivity.Next.get(Album) != null) {
 						for(Integer Song: MainActivity.Next.get(Album)) {
-							albums.get(album).add(MainActivity.Name.get(Song));
+							albums.get(album).add(Song);
 						}
 					}
 				}
@@ -528,14 +528,17 @@ public class ArtistHomeFragment extends Fragment implements ActionBar.TabListene
 	        		 
 	        		 } finally {}
 	        		 
-	        		 ArrayList<String> songs = (ArrayList<String>) pairs.getValue();
+	        		 final ArrayList<Integer> songs = (ArrayList<Integer>) pairs.getValue();
 	        		 
 	        		 for (int i=0; i<songs.size(); i++) {
 	        			 try {
+	        				 String title = MainActivity.Name.get(songs.get(i));
+	        				 final String path = MainActivity.SongPath.get(songs.get(i));
+	        				 final Integer hash = songs.get(i);
 		        			 LinearLayout lv2 = (LinearLayout) getView().findViewById(R.id.artist_songs);
 			        		 TextView tv2 = new TextView(mContext);
 			        		 tv2.setId(50); 
-			        		 tv2.setText(songs.get(i));
+			        		 tv2.setText(title);
 			        		 tv2.setTextSize(16);
 			        		 LinearLayout.LayoutParams llp2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			        		 llp2.setMargins(60, 20, 0, 10); // llp.setMargins(left, top, right, bottom);
@@ -545,7 +548,8 @@ public class ArtistHomeFragment extends Fragment implements ActionBar.TabListene
 								
 								@Override
 								public void onClick(View v) {
-
+									
+									MainActivity.playSong(hash, path);
 									
 								}
 							});			        		 

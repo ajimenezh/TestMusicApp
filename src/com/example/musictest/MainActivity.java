@@ -36,6 +36,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -146,9 +147,10 @@ public class MainActivity extends ActionBarActivity implements
 	private static boolean isPlayingVideo = false;
 	private static android.view.ViewGroup.LayoutParams originalParamsPlayer;
 	private static android.view.ViewGroup.LayoutParams originalParamsVideo;
+	private static MediaPlayer mMediaPlayer;
 	
-	private boolean isVideo = false;
-	private boolean isMusic = true;
+	private static boolean isVideo = false;
+	private static boolean isMusic = true;
 	
 
 	@Override
@@ -163,7 +165,7 @@ public class MainActivity extends ActionBarActivity implements
 		mView = findViewById(android.R.id.content);
 		actionBar = getSupportActionBar();
 		
-	    final ImageView playBtn = (ImageView) findViewById(R.id.barPlayButton);
+	    final ImageView playBtn = (ImageView) findViewById(R.id.playerPlayButton);
 		if (playBtn != null) {
 			//ViewHelper.setTranslationX(playBtn, getResources().getDisplayMetrics().widthPixels - 68);
 		}
@@ -193,6 +195,7 @@ public class MainActivity extends ActionBarActivity implements
 		//}
 			
 		final SlidingUpPanelLayout mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+		//mLayout.hidePanel();
 	        mLayout.setPanelSlideListener(new PanelSlideListener() {
 	            @Override
 	            public void onPanelSlide(View panel, float slideOffset) {
@@ -247,21 +250,30 @@ public class MainActivity extends ActionBarActivity implements
 			@Override
 			public void onClick(View v) {
 
-				if (((VideoView) MainActivity.mView.findViewById(R.id.videoView2)).isPlaying()) {
-					
-					playBtn.setImageResource(R.drawable.ic_action_play);
-					isVideoPlaying = false;
-					VideoView mVideoView = (VideoView) MainActivity.mView.findViewById(R.id.videoView2);
-					mVideoView.pause();
-					
+				if (isVideo) {
+					if (((VideoView) MainActivity.mView.findViewById(R.id.videoView2)).isPlaying()) {
+						
+						playBtn.setImageResource(R.drawable.ic_action_play);
+						isVideoPlaying = false;
+						VideoView mVideoView = (VideoView) MainActivity.mView.findViewById(R.id.videoView2);
+						mVideoView.pause();
+						
+					}
+					else {
+						
+						playBtn.setImageResource(R.drawable.ic_action_pause);
+						isVideoPlaying = true;
+						VideoView mVideoView = (VideoView) MainActivity.mView.findViewById(R.id.videoView2);
+						mVideoView.start();
+						
+					}
 				}
-				else {
-					
-					playBtn.setImageResource(R.drawable.ic_action_pause);
-					isVideoPlaying = true;
-					VideoView mVideoView = (VideoView) MainActivity.mView.findViewById(R.id.videoView2);
-					mVideoView.start();
-					
+				
+				if (isMusic) {
+					if (mMediaPlayer != null) {
+						if (mMediaPlayer.isPlaying()) mMediaPlayer.pause();
+						else mMediaPlayer.start();
+					}
 				}
 				
 			}
@@ -330,11 +342,11 @@ public class MainActivity extends ActionBarActivity implements
 //        	playBtn.setBackground(new ColorDrawable(Color.argb((int)(255*slideOffset), 0, 0, 0)));
 //    	}
     	
-    	RelativeLayout rl = (RelativeLayout) findViewById(R.id.mediaController);
-    	Log.w("Posicion", rl.getLeft() + " " + rl.getTop());
-    	rl.bringToFront();
-    	ImageView t = (ImageView) findViewById(R.id.playerPlayButton);
-    	Log.w("Posicion", t.getLeft() + " " + t.getTop());
+    	//RelativeLayout rl = (RelativeLayout) findViewById(R.id.mediaController);
+    	//Log.w("Posicion", rl.getLeft() + " " + rl.getTop());
+    	//rl.bringToFront();
+    	//ImageView t = (ImageView) findViewById(R.id.playerPlayButton);
+    	//Log.w("Posicion", t.getLeft() + " " + t.getTop());
 	}
 
 
@@ -1116,6 +1128,92 @@ public class MainActivity extends ActionBarActivity implements
 	
 	public static Context getContext() {
 		return mContext;
+	}
+
+
+	public static void playSong(Integer hash2, String path) {
+		
+		//final SlidingUpPanelLayout mLayout = (SlidingUpPanelLayout) mView.findViewById(R.id.sliding_layout);
+		//mLayout.showPanel(); 
+		
+		VideoView mVideoView = (VideoView) MainActivity.mView.findViewById(R.id.videoView2);
+		if (mVideoView.isPlaying()) {
+			mVideoView.pause();
+		}
+		mVideoView.setVisibility(View.GONE);
+		final TextView mTextView = (TextView) MainActivity.mView.findViewById(R.id.textView2);
+		mTextView.setVisibility(View.VISIBLE);
+		final CustomImageView mImageView = (CustomImageView) MainActivity.mView.findViewById(R.id.imageView2);
+		mImageView.setVisibility(View.VISIBLE);
+		ImageView playBtn = (ImageView) MainActivity.mView.findViewById(R.id.barPlayButton);
+		playBtn.setVisibility(View.VISIBLE);
+
+		if (mMediaPlayer == null) {
+			mMediaPlayer = new MediaPlayer();
+		}
+		else {
+			mMediaPlayer.reset();
+		}
+		
+	
+		try {
+			mMediaPlayer.setDataSource(path);
+			mMediaPlayer.prepare();
+			mMediaPlayer.start();
+			
+			isVideo = false;
+			isMusic = true;
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+
+	public static void playVideo() {
+		
+		//final SlidingUpPanelLayout mLayout = (SlidingUpPanelLayout) mView.findViewById(R.id.sliding_layout);
+		//mLayout.showPanel(); 
+		
+		Log.w("video", "Play video");
+		
+		isVideo = true;
+		isMusic = false;
+
+		if (mMediaPlayer != null) {
+			mMediaPlayer.reset();
+		}
+		
+		mView.clearAnimation();
+		mView.clearFocus();
+		mView.destroyDrawingCache();
+		mView.requestLayout();
+		final TextView mTextView = (TextView) MainActivity.mView.findViewById(R.id.textView2);
+		mTextView.setVisibility(View.GONE);
+		final CustomImageView mImageView = (CustomImageView) MainActivity.mView.findViewById(R.id.imageView2);
+		mImageView.setVisibility(CustomImageView.GONE);
+		//mImageView.setVisibility(View.VISIBLE);
+		final VideoView mVideoView = (VideoView) MainActivity.mView.findViewById(R.id.videoView2);
+		mVideoView.setVisibility(View.VISIBLE);
+		ImageView playBtn = (ImageView) MainActivity.mView.findViewById(R.id.barPlayButton);
+		playBtn.setVisibility(View.GONE);
+		mView.clearAnimation();
+		mView.clearFocus();
+		mView.destroyDrawingCache();
+		mView.requestLayout();
+		
+		
+		Log.w("video", mImageView.getVisibility() + " " + View.GONE);
 	}
 
 

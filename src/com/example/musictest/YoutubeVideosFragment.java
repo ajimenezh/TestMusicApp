@@ -429,6 +429,9 @@ public class YoutubeVideosFragment extends Fragment{
 		   }
 
 		   protected void onPostExecute(Void result) {
+			   
+			   MainActivity.playVideo();
+			   
 		     // do UI work here
 		     if(dialog != null && dialog.isShowing()){
 		       dialog.dismiss();
